@@ -1,0 +1,105 @@
+
+#include <stdio.h>
+
+int main() {
+    int estoque[4][4];
+    int minimo[4];
+    int totalProduto[4] = {0};
+    int compraProduto[4] = {0};
+    int totalLoja[4] = {0};
+    int i, j, reposicao, maior = 0;
+
+    // Ler os estoques
+    for (i = 0; i < 4; i++) {
+        printf("\nLoja %d:\n", i + 1);
+
+        for (j = 0; j < 4; j++) {
+            printf("Estoque do produto %d: ", j + 1);
+            scanf("%d", &estoque[i][j]);
+        }
+    }
+
+    // Ler os estoques minimos
+    printf("\nEstoques minimos:\n");
+
+    for (j = 0; j < 4; j++) {
+        printf("Produto %d: ", j + 1);
+        scanf("%d", &minimo[j]);
+    }
+
+    // Calcular os totais e as reposicoes
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 4; j++) {
+
+            totalProduto[j] += estoque[i][j];
+
+            reposicao = minimo[j] - estoque[i][j];
+
+            if (reposicao < 0) {
+                reposicao = 0;
+            }
+
+            totalLoja[i] += reposicao;
+            compraProduto[j] += reposicao;
+        }
+    }
+
+    // a) Estoque total na rede
+    printf("\nESTOQUE TOTAL NA REDE\n");
+
+    for (j = 0; j < 4; j++) {
+        printf("Produto %d: %d unidades\n",
+               j + 1, totalProduto[j]);
+    }
+
+    // b) Reposicao por loja
+    printf("\nREPOSICAO POR LOJA\n");
+
+    for (i = 0; i < 4; i++) {
+        printf("\nLoja %d:\n", i + 1);
+
+        for (j = 0; j < 4; j++) {
+            reposicao = minimo[j] - estoque[i][j];
+
+            if (reposicao < 0) {
+                reposicao = 0;
+            }
+
+            printf("Produto %d: %d unidades\n",
+                   j + 1, reposicao);
+        }
+
+        printf("Total da loja: %d unidades\n", totalLoja[i]);
+    }
+
+    // c) Compra total por produto
+    printf("\nCOMPRA TOTAL POR PRODUTO\n");
+
+    for (j = 0; j < 4; j++) {
+        printf("Produto %d: %d unidades\n",
+               j + 1, compraProduto[j]);
+    }
+
+    // Encontrar a maior reposicao
+    for (i = 0; i < 4; i++) {
+        if (totalLoja[i] > maior) {
+            maior = totalLoja[i];
+        }
+    }
+
+    // d) Mostrar as lojas empatadas
+    printf("\nMAIOR NECESSIDADE DE REPOSICAO\n");
+
+    if (maior == 0) {
+        printf("Nenhuma reposicao necessaria.\n");
+    } else {
+        for (i = 0; i < 4; i++) {
+            if (totalLoja[i] == maior) {
+                printf("Loja %d: %d unidades\n",
+                       i + 1, totalLoja[i]);
+            }
+        }
+    }
+
+    return 0;
+}
